@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             transaction.replace(R.id.fragment_container, createUserFragment)
             transaction.addToBackStack(null)
             transaction.commit()
-
+//Hej
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
