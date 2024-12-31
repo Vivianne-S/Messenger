@@ -1,13 +1,14 @@
 package com.example.messenger
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.triviaapp.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -32,6 +33,19 @@ class MainActivity : AppCompatActivity() {
 
         signInButton.setOnClickListener(){
             signIn()
+        }
+
+        val signUpButton = findViewById<TextView>(R.id.signUpText)
+
+        signUpButton.setOnClickListener(){
+
+            val createUserFragment = CreateUserFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, createUserFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+
         }
 
 
@@ -59,6 +73,10 @@ class MainActivity : AppCompatActivity() {
 
         auth.signInWithEmailAndPassword(emailText,passwordText).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
+
+                val intent = Intent(this, MessengerOverviewActivity::class.java)
+                startActivity(intent)
+
 
             } else {
                 //TODO
