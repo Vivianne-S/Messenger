@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.triviaapp"
+    namespace = "com.example.messenger"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.triviaapp"
+        applicationId = "com.example.messenger"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

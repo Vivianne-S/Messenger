@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             signIn()
         }
 
-        val signUpButton = findViewById<TextView>(R.id.signUpText)
+        val signUpButton = findViewById<TextView>(R.id.signUpHereText)
 
         signUpButton.setOnClickListener(){
 
@@ -45,10 +45,7 @@ class MainActivity : AppCompatActivity() {
             transaction.addToBackStack(null)
             transaction.commit()
 
-
         }
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
