@@ -51,9 +51,8 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="text"
                 android:text=""
                 app:layout_constraintBottom_toTopOf="@+id/password"
@@ -66,33 +65,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 app:layout_constraintBottom_toTopOf="@+id/signIn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
-            <TextView
-                android:id="@+id/signUpText"
-                android:layout_width="210dp"
-                android:layout_height="34dp"
-                android:text="Don't have an account?"
-                app:layout_constraintBottom_toTopOf="@+id/signUpHereText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
             <TextView
                 android:id="@+id/signUpHereText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="Sign up here"
+                android:text="@string/signUpHereText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/signUpText">
+                app:layout_constraintTop_toBottomOf="@+id/signIn">
 
 
             </TextView>
@@ -101,9 +91,8 @@
                 android:id="@+id/signIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Sign in"
-                app:layout_constraintBottom_toTopOf="@+id/signUpText"
+                android:text="@string/signIn"
+                app:layout_constraintBottom_toTopOf="@+id/signUpHereText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
