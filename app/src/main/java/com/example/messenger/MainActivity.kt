@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         signUpButton.setOnClickListener(){
 
+            signInButton.isEnabled = false
+
             val createUserFragment = CreateUserFragment()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, createUserFragment)

@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 class CreateUserFragment : Fragment() {
 
     lateinit var auth: FirebaseAuth
-    lateinit var password : EditText
-    lateinit var email : EditText
+    lateinit var password: EditText
+    lateinit var email: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,34 +29,41 @@ class CreateUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       val view = inflater.inflate(R.layout.fragment_create_user, container, false)
+        val view = inflater.inflate(R.layout.fragment_create_user, container, false)
 
-      email = view.findViewById(R.id.email)
+        email = view.findViewById(R.id.email)
         password = view.findViewById(R.id.password)
 
         val registerButton = view.findViewById<Button>(R.id.register)
 
         registerButton.setOnClickListener() {
-createUser()
+            createUser()
         }
 
-return view
+        return view
     }
 
     fun createUser() {
-       var emailText = email.text.toString()
+        var emailText = email.text.toString()
         var passwordText = password.text.toString()
 
-        auth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
+        if (emailText.contains("@")&& passwordText.length >= 6) {
+            auth.createUserWithEmailAndPassword(emailText, passwordText)
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
 
-                val intent = Intent(activity, MessengerOverviewActivity::class.java)
-                startActivity(intent)
+                        val intent = Intent(activity, MessengerOverviewActivity::class.java)
+                        startActivity(intent)
 
 
-            } else {
-                //TODO
-            }
+                    } else {
+                        //TODO
+                    }
+                }
+        }else if(!emailText.contains("@")){
+            Toast.makeText(activity, "Not a valid Email", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(activity, "Password must contain minimum 6 characters", Toast.LENGTH_SHORT).show()
         }
     }
 }
