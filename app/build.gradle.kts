@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.messenger"
-    compileSdk = 34
+    namespace = "com.example.triviaapp"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.messenger"
-        minSdk = 24
-        targetSdk = 35
+        applicationId = "com.example.triviaapp"
+        minSdk = 28
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
