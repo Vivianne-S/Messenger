@@ -15,11 +15,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
     private lateinit var email: EditText
     private lateinit var password: EditText
 
@@ -28,9 +28,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+
+
+
         auth = Firebase.auth
 
-        var signInButton = findViewById<Button>(R.id.signIn)
+        val signInButton = findViewById<Button>(R.id.signIn)
         email = findViewById(R.id.email)
         password = findViewById(R.id.password)
 
