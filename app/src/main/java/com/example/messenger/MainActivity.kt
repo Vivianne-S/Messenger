@@ -27,9 +27,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-
-
         auth = Firebase.auth
+
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val intent = Intent(this, ContactActivity::class.java)
+            startActivity(intent)
+        }
+
 
         val signInButton = findViewById<Button>(R.id.signIn)
         email = findViewById(R.id.email)
@@ -66,10 +72,6 @@ class MainActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
     }
 
-    public fun signOut(){
-        Firebase.auth.signOut()
-        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
-    }
 
     public fun signIn() {
         var emailText = email.text.toString()
