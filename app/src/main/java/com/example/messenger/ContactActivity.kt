@@ -1,6 +1,9 @@
 package com.example.messenger
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -8,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 
@@ -25,6 +29,14 @@ class ContactActivity() : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val signOutButton = findViewById<Button>(R.id.signOutButton)
+
+        signOutButton.setOnClickListener() {
+            signOut()
+
+        }
+
         var db = Firebase.firestore
         var recyclerView = findViewById<RecyclerView>(R.id.chatLists)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -45,5 +57,15 @@ class ContactActivity() : AppCompatActivity() {
             }
             adapter.notifyDataSetChanged()
         }
+    }
+    fun signOut(){
+        Firebase.auth.signOut()
+        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+
     }
 }
