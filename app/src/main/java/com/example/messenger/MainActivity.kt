@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
                 val intent = Intent(this, MessengerOverviewActivity::class.java)
                 startActivity(intent)
-
+//hej
 
             } else {
                 val exception = task.exception
