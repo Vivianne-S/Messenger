@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
@@ -64,13 +67,14 @@ class MainActivity : AppCompatActivity() {
 
     public fun signOut(){
         Firebase.auth.signOut()
+        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
     }
 
-    public fun signIn(){
+    public fun signIn() {
         var emailText = email.text.toString()
         var passwordText = password.text.toString()
 
-        auth.signInWithEmailAndPassword(emailText,passwordText).addOnCompleteListener() { task ->
+        auth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
 
                 val intent = Intent(this, MessengerOverviewActivity::class.java)
@@ -78,8 +82,23 @@ class MainActivity : AppCompatActivity() {
 
 
             } else {
-                //TODO
+                val exception = task.exception
+                when (exception) {
+                    is FirebaseAuthInvalidUserException -> {
+                        Toast.makeText(this, "No user found with this email", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    else -> {
+                        Toast.makeText(
+                            this,
+                            "Authentication failed: ${exception?.localizedMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
     }
 }
+
