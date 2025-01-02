@@ -61,13 +61,15 @@ class CreateUserFragment : Fragment() {
             auth.createUserWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
+                        Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(activity, MessengerOverviewActivity::class.java)
                         startActivity(intent)
 
 
                     } else {
-                        //TODO
+                        val exception = task.exception
+                        Toast.makeText(activity, "Registration failed: ${exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
                     }
                 }
         }else if(!emailText.contains("@")){
