@@ -18,8 +18,8 @@ class MessagesAdapter(val context: Context, val messages: List<ContactActivity>)
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
-        holder.userTextView.text = message.user
-        holder.messageTextView.text = message.message
+       // holder.userTextView.text = message.user
+       // holder.messageTextView.text = message.message
     }
 
     override fun getItemCount(): Int {

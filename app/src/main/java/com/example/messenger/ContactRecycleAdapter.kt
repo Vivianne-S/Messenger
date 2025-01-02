@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ContactRecycleAdapter (val context : Context, val contacts : List<User>): RecyclerView.Adapter<ContactRecycleAdapter.ViewHolder>() {
+class ContactRecycleAdapter (context : Context, val contacts : List<User>): RecyclerView.Adapter<ContactRecycleAdapter.ViewHolder>() {
 
     var layoutInflator = LayoutInflater.from(context)
     override fun onCreateViewHolder(

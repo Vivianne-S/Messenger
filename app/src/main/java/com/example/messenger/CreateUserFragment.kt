@@ -73,7 +73,10 @@ lateinit var db : FirebaseFirestore
 
                         val user = User(emailText, userId)
 
+
                         db.collection("Users").add(user)
+
+
 
                         Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(activity, ContactActivity::class.java)
