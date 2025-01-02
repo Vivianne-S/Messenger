@@ -11,10 +11,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class CreateUserFragment : Fragment() {
 
+lateinit var db : FirebaseFirestore
     lateinit var auth: FirebaseAuth
     lateinit var password: EditText
     lateinit var email: EditText
@@ -24,6 +28,9 @@ class CreateUserFragment : Fragment() {
         arguments?.let {
         }
         auth = FirebaseAuth.getInstance()
+        db = Firebase.firestore
+
+
     }
 
     override fun onCreateView(
@@ -62,6 +69,15 @@ class CreateUserFragment : Fragment() {
             auth.createUserWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
+
+
+                        val userId = auth.currentUser!!.uid
+
+                        val user = User(emailText, userId)
+
+                        db.collection("Users").add(user)
+
+
                         Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(activity, MessengerOverviewActivity::class.java)
                         startActivity(intent)
@@ -78,5 +94,6 @@ class CreateUserFragment : Fragment() {
         }else{
             Toast.makeText(activity, "Password must contain minimum 6 characters", Toast.LENGTH_SHORT).show()
         }
+
     }
 }
