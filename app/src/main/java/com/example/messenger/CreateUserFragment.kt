@@ -70,13 +70,11 @@ lateinit var db : FirebaseFirestore
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
 
-
                         val userId = auth.currentUser!!.uid
 
                         val user = User(emailText, userId)
 
                         db.collection("Users").add(user)
-
 
                         Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(activity, MessengerOverviewActivity::class.java)
