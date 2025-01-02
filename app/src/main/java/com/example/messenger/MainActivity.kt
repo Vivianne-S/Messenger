@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     public fun signOut(){
         Firebase.auth.signOut()
-        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
     }
 
     public fun signIn(){
@@ -76,20 +75,10 @@ class MainActivity : AppCompatActivity() {
 
                 val intent = Intent(this, MessengerOverviewActivity::class.java)
                 startActivity(intent)
-//hej
+
 
             } else {
-                val exception = task.exception
-                when (exception) {
-                    is FirebaseAuthInvalidUserException -> {
-                        Toast.makeText(this, "No user found with this email", Toast.LENGTH_SHORT).show()
-                    }
-                    is FirebaseAuthInvalidCredentialsException -> {
-                        Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Toast.makeText(this, "Authentication failed: ${exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
-                    }
+                //TODO
             }
         }
     }
