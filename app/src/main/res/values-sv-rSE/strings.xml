@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Messenger</string>
+
+    <string name="email">Epost</string>
+
+    <string name="password">Lösenord</string>
+
+    <string name="signIn">Logga in</string>
+
+    <string name="register">Registera</string>
+
+    <string name="email_error">Inte en giltig epost-adress.</string>
+
+    <string name="password_error">Lösenordet måste innehålla minst 6 tecken.</string>
+
+    <string name="signInHereText">Har du redan ett aktivt konto? Logga in här.</string>
+
+    <string name="signUpHereText">Har du inget konto? Skapa ett här!</string>
+
+</resources>

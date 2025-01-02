@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.text.HtmlCompat
 import com.google.firebase.auth.FirebaseAuth
 
 class CreateUserFragment : Fragment() {
@@ -35,6 +37,14 @@ class CreateUserFragment : Fragment() {
         password = view.findViewById(R.id.password)
 
         val registerButton = view.findViewById<Button>(R.id.register)
+
+
+       val signInTextView= view.findViewById<TextView>(R.id.signInText)
+
+        signInTextView.setOnClickListener(){
+            //TODO
+        }
+
 
         registerButton.setOnClickListener() {
             createUser()
