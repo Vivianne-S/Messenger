@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -77,7 +76,7 @@ lateinit var db : FirebaseFirestore
                         db.collection("Users").add(user)
 
                         Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(activity, MessengerOverviewActivity::class.java)
+                        val intent = Intent(activity, ContactActivity::class.java)
                         startActivity(intent)
 
                     } else {

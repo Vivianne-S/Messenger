@@ -12,10 +12,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
 
-                val intent = Intent(this, MessengerOverviewActivity::class.java)
+                val intent = Intent(this, ContactActivity::class.java)
                 startActivity(intent)
 
 
