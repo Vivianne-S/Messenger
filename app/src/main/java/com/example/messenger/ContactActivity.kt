@@ -1,5 +1,6 @@
 package com.example.messenger
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -60,5 +61,11 @@ class ContactActivity() : AppCompatActivity() {
     fun signOut(){
         Firebase.auth.signOut()
         Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+
     }
 }
