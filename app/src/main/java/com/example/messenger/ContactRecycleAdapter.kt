@@ -31,7 +31,7 @@ class ContactRecycleAdapter (context : Context, val contacts : List<User>): Recy
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var contactNameTV = itemView.findViewById<TextView>(R.id.contacNameTV)
+        var contactNameTV = itemView.findViewById<TextView>(R.id.contactNameTV)
         var lastMessageTV = itemView.findViewById<TextView>(R.id.lastMessageTV)
 
     }
