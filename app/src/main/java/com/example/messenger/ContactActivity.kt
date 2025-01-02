@@ -14,7 +14,7 @@ class ContactActivity() : AppCompatActivity() {
         lateinit var contacts : List<User>
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
+//test
         var recyclerView = findViewById<RecyclerView>(R.id.chatLists)
         val adapter = MessagesAdapter(this, contacts)
 
