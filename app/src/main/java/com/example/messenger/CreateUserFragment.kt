@@ -42,6 +42,7 @@ class CreateUserFragment : Fragment() {
        val signInTextView= view.findViewById<TextView>(R.id.signInText)
 
         signInTextView.setOnClickListener(){
+           // test
             //TODO
         }
 
