@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MessagesAdapter(val context: Context, val messages: List<ContactActivity>) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
+class MessagesAdapter(
+    val context: Context,
+    val messages: List<Messages>)
+    : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
 

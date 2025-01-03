@@ -29,6 +29,7 @@ class ContactRecycleAdapter(
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
             intent.putExtra("contactEmail", contact.email)
+            intent.putExtra("CONTACT_ID_KEY", contact.id)
             holder.itemView.context.startActivity(intent)
         }
     }
