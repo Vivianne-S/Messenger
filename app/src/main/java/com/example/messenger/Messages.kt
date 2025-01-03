@@ -6,7 +6,7 @@ class Messages() {
     var message: String = ""
     var timeStamp: String = ""
 
-    constructor(userId: String, message: String, timeStamp: String) : this() {
+    constructor(userId: String, email : String, message: String, timeStamp: String) : this() {
         this.userId = userId
         this.email = email
         this.message = message
