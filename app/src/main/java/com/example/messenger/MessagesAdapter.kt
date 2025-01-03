@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MessagesAdapter(
-     context: Context,
-    val messages: List<Messages>)
-    : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
+    context: Context,
+    private val messages: MutableList<Messages>
+) : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
 
