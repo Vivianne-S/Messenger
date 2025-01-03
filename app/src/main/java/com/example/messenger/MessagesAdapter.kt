@@ -21,8 +21,9 @@ class MessagesAdapter(
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
-       holder.userTextView.text = message.userId
+       holder.userTextView.text = message.email
        holder.messageTextView.text = message.message
+
     }
 
     override fun getItemCount(): Int {

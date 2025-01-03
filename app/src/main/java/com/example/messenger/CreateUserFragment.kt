@@ -71,12 +71,13 @@ lateinit var db : FirebaseFirestore
 
                         val userId = auth.currentUser!!.uid
 
-                        val user = User(emailText, userId)
+                        val split = emailText.split("@")
 
+                        val contactName = split[0]
+
+                        val user = User(emailText, userId, contactName)
 
                         db.collection("Users").add(user)
-
-
 
                         Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(activity, ContactActivity::class.java)

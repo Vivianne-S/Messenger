@@ -1,8 +1,10 @@
 package com.example.messenger
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +47,7 @@ class ChatActivity : AppCompatActivity() {
         rv = findViewById(R.id.chatMessages)
         messageInput = findViewById(R.id.messageInput)
 
+
         rv.layoutManager = LinearLayoutManager(this)
         val adapter = MessagesAdapter(this, messages)
         rv.adapter = adapter
@@ -53,6 +56,10 @@ class ChatActivity : AppCompatActivity() {
 
         val contactEmail = intent.getStringExtra("contactEmail")
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
+        val userName = intent.getStringExtra("USER_NAME")
+
+
+
 
         val userId = auth.currentUser!!.uid
         val chatHistory = generateDocument(userId, contactId ?: "")
@@ -96,11 +103,6 @@ class ChatActivity : AppCompatActivity() {
         val document = listOf(currentUserId, contactId).sorted()
         return "Chat_${document[0]}_${document[1]}"
     }
-
-    fun generateUniqueId(): String {
-        return UUID.randomUUID().toString()
-    }
-
 
     fun timeStamp(): String {
         val time = LocalDateTime.now()

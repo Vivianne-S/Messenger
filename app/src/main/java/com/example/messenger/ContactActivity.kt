@@ -57,6 +57,7 @@ class ContactActivity() : AppCompatActivity() {
             }
             adapter.notifyDataSetChanged()
         }
+
         
     }
     fun signOut(){
