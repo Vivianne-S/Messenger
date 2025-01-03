@@ -21,7 +21,11 @@ class MessagesAdapter(
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
+
+        //TODO should show who sent, the receivers name...
        holder.userTextView.text = message.email
+
+        //Show the sent message.
        holder.messageTextView.text = message.message
 
     }

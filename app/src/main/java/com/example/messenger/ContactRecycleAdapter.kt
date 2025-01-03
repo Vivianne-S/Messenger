@@ -22,10 +22,14 @@ class ContactRecycleAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contacts[position]
+
+       //Users email will be displayed in the textView
         holder.contactNameTV.text = contact.email
+
+       //Will eventually hold last message. Now just a "Hej".
         holder.lastMessageTV.text = "Hej"
 
-
+        //Email, id and userName is sent to ChatActivity.
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
             intent.putExtra("contactEmail", contact.email)

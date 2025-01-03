@@ -17,7 +17,8 @@ import com.google.firebase.firestore.toObject
 
 
 class ContactActivity() : AppCompatActivity() {
-   var contacts = mutableListOf<User>()
+   //List with all users.
+    var contacts = mutableListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -32,14 +33,16 @@ class ContactActivity() : AppCompatActivity() {
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
 
+        //Button that sign out user.
         signOutButton.setOnClickListener() {
             signOut()
 
         }
 
-        var db = Firebase.firestore
-        var recyclerView = findViewById<RecyclerView>(R.id.chatLists)
+        val db = Firebase.firestore
+        val recyclerView = findViewById<RecyclerView>(R.id.chatLists)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
         val adapter = ContactRecycleAdapter(this, contacts)
         recyclerView.adapter = adapter
 
@@ -47,8 +50,8 @@ class ContactActivity() : AppCompatActivity() {
 
         docRef.get().addOnSuccessListener { documentSnapShot ->
 
+            // Adds user to database and contact list
             for (document in documentSnapShot.documents) {
-
                 val user = document.toObject<User>()
 
                 if (user != null) {
@@ -60,6 +63,11 @@ class ContactActivity() : AppCompatActivity() {
 
         
     }
+
+    /**
+     * function sign out user and send user to the log in page (MainActivity).
+     * after log out, doesn´t allow user to use "back swipe".
+     */
     fun signOut(){
         Firebase.auth.signOut()
         Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
