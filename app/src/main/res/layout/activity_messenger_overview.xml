@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/HotPink"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ContactActivity">
@@ -75,7 +76,9 @@
             android:id="@+id/signOutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
             android:text="Sign out"
+            app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
