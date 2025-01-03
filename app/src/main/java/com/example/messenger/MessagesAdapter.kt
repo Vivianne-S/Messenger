@@ -8,21 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MessagesAdapter(
-    val context: Context,
+     context: Context,
     val messages: List<Messages>)
     : RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val itemView = layoutInflater.inflate(R.layout.item_message, parent, false)
+        val itemView = layoutInflater.inflate(R.layout.message_item, parent, false)
         return MessageViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
-       // holder.userTextView.text = message.user
-       // holder.messageTextView.text = message.message
+       holder.userTextView.text = message.userId
+       holder.messageTextView.text = message.message
     }
 
     override fun getItemCount(): Int {
@@ -30,7 +30,7 @@ class MessagesAdapter(
     }
 
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val userTextView: TextView = itemView.findViewById(R.id.userTextView)
-        val messageTextView: TextView = itemView.findViewById(R.id.messageTextView)
+        val userTextView: TextView = itemView.findViewById(R.id.senderTV)
+        val messageTextView: TextView = itemView.findViewById(R.id.messageTV)
     }
 }
