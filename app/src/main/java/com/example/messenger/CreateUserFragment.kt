@@ -17,7 +17,7 @@ import com.google.firebase.firestore.firestore
 
 class CreateUserFragment : Fragment() {
 
-lateinit var db : FirebaseFirestore
+    lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
     lateinit var password: EditText
     lateinit var email: EditText
@@ -39,16 +39,16 @@ lateinit var db : FirebaseFirestore
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_create_user, container, false)
 
+
         email = view.findViewById(R.id.email)
         password = view.findViewById(R.id.password)
 
         val registerButton = view.findViewById<Button>(R.id.register)
+        val signInTextView = view.findViewById<TextView>(R.id.signInText)
 
 
-       val signInTextView= view.findViewById<TextView>(R.id.signInText)
-
-        signInTextView.setOnClickListener(){
-           // test
+        //TextButton that takes user back to mainActivity to log in.
+        signInTextView.setOnClickListener() {
             //TODO
         }
 
@@ -60,17 +60,22 @@ lateinit var db : FirebaseFirestore
         return view
     }
 
+    /**
+     * function that takes user input, creates a new account and add user to database.
+     */
     fun createUser() {
         var emailText = email.text.toString()
         var passwordText = password.text.toString()
 
-        if (emailText.contains("@")&& passwordText.length >= 6) {
+        if (emailText.contains("@") && passwordText.length >= 6) {
             auth.createUserWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
 
                         val userId = auth.currentUser!!.uid
 
+                        //The first part of email address
+                        // (everything before the "@") is saved in a new variable.
                         val split = emailText.split("@")
 
                         val contactName = split[0]
@@ -79,21 +84,33 @@ lateinit var db : FirebaseFirestore
 
                         db.collection("Users").add(user)
 
-                        Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            activity,
+                            "Account created successfully!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         val intent = Intent(activity, ContactActivity::class.java)
                         startActivity(intent)
 
                     } else {
                         val exception = task.exception
-                        Toast.makeText(activity, "Registration failed: ${exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            activity,
+                            "Registration failed: ${exception?.localizedMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
 
                     }
                 }
-        }else if(!emailText.contains("@")){
+        } else if (!emailText.contains("@")) {
             Toast.makeText(activity, "Not a valid Email", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(activity, "Password must contain minimum 6 characters", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                activity,
+                "Password must contain minimum 6 characters",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }

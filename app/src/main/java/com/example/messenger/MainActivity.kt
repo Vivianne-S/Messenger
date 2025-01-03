@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         val currentUser = auth.currentUser
 
+        //Checks if a user is already logged in.
         if (currentUser != null) {
             val intent = Intent(this, ContactActivity::class.java)
             startActivity(intent)
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         val signUpButton = findViewById<TextView>(R.id.signUpHereText)
 
+        //TextButton that takes user to fragment to create new account.
         signUpButton.setOnClickListener(){
 
             signInButton.isEnabled = false
@@ -56,9 +58,7 @@ class MainActivity : AppCompatActivity() {
             transaction.replace(R.id.fragment_container, createUserFragment)
             transaction.addToBackStack(null)
             transaction.commit()
-//Hej
         }
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -73,7 +73,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    public fun signIn() {
+    /**
+     * function that log in user
+     * if user is found and logged in properly, next activity will start
+     */
+    fun signIn() {
         var emailText = email.text.toString()
         var passwordText = password.text.toString()
 
