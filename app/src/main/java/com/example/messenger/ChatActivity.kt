@@ -10,7 +10,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -42,7 +41,7 @@ class ChatActivity : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
 
         messages = mutableListOf()
-        db = Firebase.firestore
+        db = FirebaseFirestore.getInstance()
         rv = findViewById(R.id.chatMessages)
         messageInput = findViewById(R.id.messageInput)
 
@@ -52,57 +51,50 @@ class ChatActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.button)
 
-
         val contactEmail = intent.getStringExtra("contactEmail")
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
 
         val userId = auth.currentUser!!.uid
-
         val chatHistory = generateDocument(userId, contactId ?: "")
 
         val docRef = db.collection("Users").document(userId).collection(chatHistory)
         val contactDocRef = db.collection("Users").document(contactId ?: "").collection(chatHistory)
 
-        docRef.get().addOnSuccessListener { documentSnapShot ->
-
-            for (document in documentSnapShot.documents) {
-
-                var userMessage = document.toObject<Messages>()
-
-                if (userMessage != null) {
-                    messages.add(userMessage)
+        docRef.get().addOnSuccessListener { documentSnapshot ->
+            for (document in documentSnapshot.documents) {
+                val userMessage = document.toObject<Messages>()
+                userMessage?.let {
+                    messages.add(it)
                 }
             }
             adapter.notifyDataSetChanged()
         }
 
-        button.setOnClickListener() {
+        button.setOnClickListener {
+            val inputMessage = messageInput.text.toString().trim()
+            if (inputMessage.isNotEmpty()) {
+                val timeStamp = timeStamp()
+                val sendingMessage = Messages(userId, inputMessage, timeStamp)
 
-            val timeStamp = timeStamp()
-            val inputMessage = messageInput.text.toString()
+                docRef.add(sendingMessage)
+                    .addOnSuccessListener {
+                        messages.add(sendingMessage)
+                        adapter.notifyItemInserted(messages.size - 1)
+                        messageInput.text.clear()
+                        rv.scrollToPosition(adapter.itemCount - 1)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT).show()
+                    }
 
-            val sendingMessage = Messages(userId, inputMessage, timeStamp)
-
-            docRef.add(sendingMessage)
-                .addOnSuccessListener {
-                    messages.add(sendingMessage)
-                    adapter.notifyDataSetChanged()
-                    messageInput.text.clear()
-                }
-
-            contactDocRef.add(sendingMessage)
-
-            rv.scrollToPosition(adapter.itemCount-1)
-
+                contactDocRef.add(sendingMessage)
+            }
         }
     }
 
     fun generateDocument(currentUserId: String, contactId: String): String {
-
         val document = listOf(currentUserId, contactId).sorted()
-
         return "Chat_${document[0]}_${document[1]}"
-
     }
 
     fun generateUniqueId(): String {
@@ -113,6 +105,5 @@ class ChatActivity : AppCompatActivity() {
     fun timeStamp(): String {
         val time = LocalDateTime.now()
         return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-
     }
 }
