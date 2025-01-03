@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/HotPink"
     android:background="#E9E4E4"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".CreateUserFragment">
@@ -55,6 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:text="@string/register"
+            android:backgroundTint="@color/black"
+            app:cornerRadius="10dp"
             app:layout_constraintBottom_toTopOf="@+id/signInText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
