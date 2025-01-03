@@ -58,9 +58,6 @@ class ChatActivity : AppCompatActivity() {
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
         val userName = intent.getStringExtra("USER_NAME")
 
-
-
-
         val userId = auth.currentUser!!.uid
         val chatHistory = generateDocument(userId, contactId ?: "")
 
@@ -81,7 +78,7 @@ class ChatActivity : AppCompatActivity() {
             val inputMessage = messageInput.text.toString().trim()
             if (inputMessage.isNotEmpty()) {
                 val timeStamp = timeStamp()
-                val sendingMessage = Messages(userId, inputMessage, timeStamp)
+                val sendingMessage = Messages(userId, userName ?: "null", inputMessage, timeStamp)
 
                 docRef.add(sendingMessage)
                     .addOnSuccessListener {
