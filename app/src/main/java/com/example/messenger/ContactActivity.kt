@@ -47,21 +47,23 @@ class ContactActivity() : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         val docRef = db.collection("Users")
+        val currentUserId = Firebase.auth.currentUser?.uid
 
         docRef.get().addOnSuccessListener { documentSnapShot ->
+            contacts.clear()
 
-            // Adds user to database and contact list
             for (document in documentSnapShot.documents) {
                 val user = document.toObject<User>()
 
-                if (user != null) {
+                if (user != null && user.id != currentUserId) {
                     contacts.add(user)
                 }
             }
             adapter.notifyDataSetChanged()
         }
 
-        
+
+
     }
 
     /**
