@@ -20,6 +20,14 @@ class ContactActivity() : AppCompatActivity() {
    //List with all users.
     var contacts = mutableListOf<User>()
 
+    fun removeContact(contact: User) {
+        val position = contacts.indexOfFirst { it.id == contact.id }
+        if (position != -1) {
+            contacts.removeAt(position)
+            findViewById<RecyclerView>(R.id.chatLists).adapter?.notifyItemRemoved(position)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -33,11 +41,14 @@ class ContactActivity() : AppCompatActivity() {
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
 
+
+
         val viewFriendsButton = findViewById<Button>(R.id.viewFriendsButton)
         viewFriendsButton.setOnClickListener {
             val intent = Intent(this, FriendsListActivity::class.java)
             startActivity(intent)
         }
+
 
 
         //Button that sign out user.
