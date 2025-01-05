@@ -1,4 +1,5 @@
 package com.example.messenger
+import android.R.attr.data
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -14,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Collections
+
 
 class ChatActivity : AppCompatActivity() {
 
@@ -34,6 +37,7 @@ class ChatActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
 
         val auth = FirebaseAuth.getInstance()
 
