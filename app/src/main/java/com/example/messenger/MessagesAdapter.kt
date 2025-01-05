@@ -30,8 +30,11 @@ class MessagesAdapter(
         val message = messages[position]
         val currentUsedId = Firebase.auth.currentUser?.uid
 
+        //gives access to the cardview
         cardView = holder.itemView.findViewById(R.id.cardView)
 
+        //this changes the color of the user
+        //only need to reverse to change the other users color
         if(message.userId == currentUsedId) {
             cardView.setCardBackgroundColor(Color.parseColor("#e75555"))
         }
