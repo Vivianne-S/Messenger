@@ -82,15 +82,15 @@ class CreateUserFragment : Fragment() {
 
                         val user = User(emailText, userId, contactName)
 
-                        db.collection("Users").add(user)
-
-                        Toast.makeText(
-                            activity,
-                            "Account created successfully!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        val intent = Intent(activity, ContactActivity::class.java)
-                        startActivity(intent)
+                        db.collection("Users").document(userId).set(user)
+                            .addOnSuccessListener {
+                                Toast.makeText(activity, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(activity, ContactActivity::class.java)
+                                startActivity(intent)
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(activity, "Failed to create user: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
 
                     } else {
                         val exception = task.exception

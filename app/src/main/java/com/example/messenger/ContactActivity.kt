@@ -20,6 +20,14 @@ class ContactActivity() : AppCompatActivity() {
    //List with all users.
     var contacts = mutableListOf<User>()
 
+    fun removeContact(contact: User) {
+        val position = contacts.indexOfFirst { it.id == contact.id }
+        if (position != -1) {
+            contacts.removeAt(position)
+            findViewById<RecyclerView>(R.id.chatLists).adapter?.notifyItemRemoved(position)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,6 +40,16 @@ class ContactActivity() : AppCompatActivity() {
         }
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
+
+
+
+        val viewFriendsButton = findViewById<Button>(R.id.viewFriendsButton)
+        viewFriendsButton.setOnClickListener {
+            val intent = Intent(this, FriendsListActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
         //Button that sign out user.
         signOutButton.setOnClickListener() {
@@ -46,25 +64,26 @@ class ContactActivity() : AppCompatActivity() {
         val adapter = ContactRecycleAdapter(this, contacts)
         recyclerView.adapter = adapter
 
-        val docRef = db.collection("Users")
         val currentUserId = Firebase.auth.currentUser?.uid
+        if (currentUserId != null) {
+            db.collection("Users").document(currentUserId).get()
+                .addOnSuccessListener { currentUserDoc ->
+                    val friendIds = currentUserDoc.get("friends") as? List<String> ?: emptyList()
 
-        docRef.get().addOnSuccessListener { documentSnapShot ->
-            contacts.clear()
-
-            for (document in documentSnapShot.documents) {
-                val user = document.toObject<User>()
-
-                if (user != null && user.id != currentUserId) {
-                    contacts.add(user)
+                    db.collection("Users").get().addOnSuccessListener { documentSnapShot ->
+                        contacts.clear()
+                        for (document in documentSnapShot.documents) {
+                            val user = document.toObject<User>()
+                            if (user != null && user.id != currentUserId && !friendIds.contains(user.id)) {
+                                contacts.add(user)
+                            }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
                 }
-            }
-            adapter.notifyDataSetChanged()
         }
-
-
-
     }
+
 
     /**
      * function sign out user and send user to the log in page (MainActivity).
