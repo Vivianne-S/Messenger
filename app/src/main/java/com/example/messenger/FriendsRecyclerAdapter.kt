@@ -38,6 +38,5 @@ class FriendsRecyclerAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendNameTV: TextView = itemView.findViewById(R.id.friendNameTV)
-        val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
     }
 }
