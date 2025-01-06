@@ -17,7 +17,10 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Collections
 
@@ -27,7 +30,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var rv: RecyclerView
     lateinit var messageInput: EditText
     lateinit var db: FirebaseFirestore
-    lateinit var contactName : TextView
+    lateinit var contactName: TextView
 
     var messages = mutableListOf<Messages>()
 
@@ -45,7 +48,7 @@ class ChatActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageView>(R.id.back_button)
 
-        backButton.setOnClickListener(){
+        backButton.setOnClickListener() {
             finish()
         }
 
@@ -53,7 +56,7 @@ class ChatActivity : AppCompatActivity() {
 
         val auth = FirebaseAuth.getInstance()
 
-       // messages = mutableListOf()
+        // messages = mutableListOf()
         db = FirebaseFirestore.getInstance()
         rv = findViewById(R.id.chatMessages)
         messageInput = findViewById(R.id.messageInput)
@@ -88,7 +91,8 @@ class ChatActivity : AppCompatActivity() {
                 chatRef.orderBy("timeStamp", Query.Direction.ASCENDING)
                     .addSnapshotListener { snapshot, error ->
                         if (error != null) {
-                            Toast.makeText(this, "Error loading messages", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Error loading messages", Toast.LENGTH_SHORT)
+                                .show()
                             return@addSnapshotListener
                         }
 
@@ -100,6 +104,7 @@ class ChatActivity : AppCompatActivity() {
                                     adapter.notifyItemInserted(messages.size - 1)
                                     rv.scrollToPosition(messages.size - 1)
                                 }
+
                                 else -> {}
                             }
                         }
@@ -110,14 +115,18 @@ class ChatActivity : AppCompatActivity() {
                     val inputMessage = messageInput.text.toString().trim()
                     if (inputMessage.isNotEmpty()) {
                         val timeStamp = timeStamp()
-                        val sendingMessage = Messages(userId, currentUserName, inputMessage, timeStamp)
+
+
+                        val sendingMessage =
+                            Messages(userId, currentUserName, inputMessage, timeStamp)
 
                         chatRef.add(sendingMessage)
                             .addOnSuccessListener {
                                 messageInput.text.clear()
                             }
                             .addOnFailureListener {
-                                Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                     }
                 }
@@ -126,7 +135,6 @@ class ChatActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to get user details", Toast.LENGTH_SHORT).show()
             }
     }
-
 
     /**
      * generate a new document between the two users to add messages to.
@@ -139,8 +147,25 @@ class ChatActivity : AppCompatActivity() {
     /**
      * Timestamp to keep track on when messages are sent.
      */
-    fun timeStamp(): String {
+    /* fun timeStamp(): String {
         val time = LocalDateTime.now()
-        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+    }*/
+
+    fun formatEpochToDate(epochSeconds: Long): String {
+        val instant = Instant.ofEpochSecond(epochSeconds)
+        val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return dateTime.format(formatter)
+    }
+
+    fun timeStampInSec(): Long {
+        val time = LocalDateTime.now()
+        return time.toEpochSecond(ZoneOffset.UTC)
+    }
+
+    fun timeStamp() : String{
+        val epochTime = timeStampInSec()
+       return formatEpochToDate(epochTime)
     }
 }
