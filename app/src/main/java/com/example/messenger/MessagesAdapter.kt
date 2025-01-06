@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.w3c.dom.Text
 
 class MessagesAdapter(
     context: Context,
@@ -23,6 +24,7 @@ class MessagesAdapter(
         val message = messages[position]
        holder.userTextView.text = message.email
        holder.messageTextView.text = message.message
+        holder.timeStampTV.text = message.timeStamp
 
     }
 
@@ -33,5 +35,6 @@ class MessagesAdapter(
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userTextView: TextView = itemView.findViewById(R.id.senderTV)
         val messageTextView: TextView = itemView.findViewById(R.id.messageTV)
+        val timeStampTV : TextView = itemView.findViewById(R.id.timeStampTV)
     }
 }
