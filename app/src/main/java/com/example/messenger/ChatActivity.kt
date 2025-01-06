@@ -154,9 +154,11 @@ class ChatActivity : AppCompatActivity() {
 
     fun formatEpochToDate(epochSeconds: Long): String {
         val instant = Instant.ofEpochSecond(epochSeconds)
-       // val dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault())
-        return formatter.format(instant)
+
+        val zonedDateTime = instant.atZone(ZoneId.of("Europe/Stockholm"))
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        return formatter.format(zonedDateTime)
     }
 
     fun timeStampInSec(): Long {
@@ -165,6 +167,6 @@ class ChatActivity : AppCompatActivity() {
 
     fun timeStamp() : String{
         val epochTime = timeStampInSec()
-       return formatEpochToDate(epochTime)
+        return formatEpochToDate(epochTime)
     }
 }
