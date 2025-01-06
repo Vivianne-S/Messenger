@@ -19,13 +19,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/userIcon"
-            android:layout_width="62dp"
-            android:layout_height="62dp"
-            tools:layout_editor_absoluteX="174dp"
-            tools:layout_editor_absoluteY="30dp"
-            tools:srcCompat="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/contactNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+        </TextView>
 
         <ImageView
             android:id="@+id/back_button"
