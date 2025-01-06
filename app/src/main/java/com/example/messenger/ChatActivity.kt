@@ -141,6 +141,6 @@ class ChatActivity : AppCompatActivity() {
      */
     fun timeStamp(): String {
         val time = LocalDateTime.now()
-        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
     }
 }
