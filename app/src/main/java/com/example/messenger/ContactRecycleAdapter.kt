@@ -32,12 +32,12 @@ class ContactRecycleAdapter(
 
         // Reset views to their default state
         holder.contactNameTV.visibility = View.VISIBLE
-        holder.lastMessageTV.visibility = View.VISIBLE
+       // holder.lastMessageTV.visibility = View.VISIBLE
         holder.addFriendButton.visibility = View.VISIBLE
 
         // Set the email in the contact name TextView
         holder.contactNameTV.text = contact.email ?: "No email"
-        holder.lastMessageTV.text = "Hej"
+       // holder.lastMessageTV.text = "Hej"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
@@ -96,7 +96,7 @@ class ContactRecycleAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val contactNameTV: TextView = itemView.findViewById(R.id.contactNameTV)
-        val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
+       // val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
         val addFriendButton: Button = itemView.findViewById(R.id.addFriendButton)
     }
 }
