@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.firestore)
+    implementation("nl.dionsegijn:konfetti-xml:2.0.2")
+    implementation("nl.dionsegijn:konfetti-core:2.0.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -2,6 +2,7 @@ package com.example.messenger
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Size
+import nl.dionsegijn.konfetti.xml.KonfettiView
+import java.util.concurrent.TimeUnit
 
 class ContactRecycleAdapter(
     private val context: Context,
@@ -47,7 +55,25 @@ class ContactRecycleAdapter(
             holder.itemView.context.startActivity(intent)
         }
 
+
         holder.addFriendButton.setOnClickListener {
+            holder.konfettiView.visibility = View.VISIBLE
+
+            val emitter = Emitter(duration = 10, TimeUnit.SECONDS).perSecond(50)
+
+            val konfettiParty = Party(
+                speed = 10f,
+                maxSpeed = 30f,
+                damping = 0.9f,
+                spread = 360,
+                colors = listOf(Color.YELLOW, Color.GREEN, Color.MAGENTA),
+                emitter = emitter,
+                position = Position.Relative(0.5, 0.3),
+                size = listOf(Size.SMALL, Size.LARGE),
+                timeToLive = 10000L
+            )
+            holder.konfettiView.start(konfettiParty)
+
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 val db = Firebase.firestore
@@ -98,5 +124,6 @@ class ContactRecycleAdapter(
         val contactNameTV: TextView = itemView.findViewById(R.id.contactNameTV)
         val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
         val addFriendButton: Button = itemView.findViewById(R.id.addFriendButton)
+        val konfettiView: KonfettiView = itemView.findViewById(R.id.konfettiView)
     }
 }
