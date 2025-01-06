@@ -111,25 +111,15 @@ class ChatActivity : AppCompatActivity() {
                 button.setOnClickListener {
                     val inputMessage = messageInput.text.toString().trim()
                     if (inputMessage.isNotEmpty()) {
-                        // First create a document with server timestamp
-                        val messageData = hashMapOf(
-                            "userId" to userId,
-                            "email" to currentUserName,
-                            "message" to inputMessage,
-                            "timeStamp" to FieldValue.serverTimestamp()
+                        val sendingMessage = Messages(
+                            userId,
+                            currentUserName,
+                            inputMessage,
+                            com.google.firebase.Timestamp.now()  // Use current server time
                         )
 
-                        chatRef.add(messageData)
-                            .addOnSuccessListener { documentRef ->
-                                // Get the document to get the actual server timestamp
-                                documentRef.get().addOnSuccessListener { snapshot ->
-                                    val timestamp = snapshot.getTimestamp("timeStamp")
-                                    val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                                    val timeString = formatter.format(timestamp?.toDate())
-
-                                    // Update the document with formatted timestamp string
-                                    documentRef.update("timeStamp", timeString)
-                                }
+                        chatRef.add(sendingMessage)
+                            .addOnSuccessListener {
                                 messageInput.text.clear()
                             }
                             .addOnFailureListener {
