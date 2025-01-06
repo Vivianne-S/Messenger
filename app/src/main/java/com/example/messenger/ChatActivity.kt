@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
@@ -106,14 +107,29 @@ class ChatActivity : AppCompatActivity() {
                     }
 
                 // Send button handler
+                // In ChatActivity, modify just the send button handler:
                 button.setOnClickListener {
                     val inputMessage = messageInput.text.toString().trim()
                     if (inputMessage.isNotEmpty()) {
-                        val timeStamp = timeStamp()
-                        val sendingMessage = Messages(userId, currentUserName, inputMessage, timeStamp)
+                        // First create a document with server timestamp
+                        val messageData = hashMapOf(
+                            "userId" to userId,
+                            "email" to currentUserName,
+                            "message" to inputMessage,
+                            "timeStamp" to FieldValue.serverTimestamp()
+                        )
 
-                        chatRef.add(sendingMessage)
-                            .addOnSuccessListener {
+                        chatRef.add(messageData)
+                            .addOnSuccessListener { documentRef ->
+                                // Get the document to get the actual server timestamp
+                                documentRef.get().addOnSuccessListener { snapshot ->
+                                    val timestamp = snapshot.getTimestamp("timeStamp")
+                                    val formatter = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                                    val timeString = formatter.format(timestamp?.toDate())
+
+                                    // Update the document with formatted timestamp string
+                                    documentRef.update("timeStamp", timeString)
+                                }
                                 messageInput.text.clear()
                             }
                             .addOnFailureListener {
