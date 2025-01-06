@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -25,6 +26,10 @@ class FriendsRecyclerAdapter(
 
         holder.friendNameTV.text = friend.userName
 
+        holder.deleteButton.setOnClickListener(){
+            //TODO remove from friendList and add to contactList again.
+        }
+
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
             intent.putExtra("contactEmail", friend.email)
@@ -38,5 +43,6 @@ class FriendsRecyclerAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val friendNameTV: TextView = itemView.findViewById(R.id.friendNameTV)
+        val deleteButton : ImageView = itemView.findViewById(R.id.deleteButton)
     }
 }

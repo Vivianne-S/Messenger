@@ -13,7 +13,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -68,51 +70,63 @@ class ChatActivity : AppCompatActivity() {
 
         //get contact id and userName from contacts.
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
-        val userName = intent.getStringExtra("USER_NAME")
+        val contactNameString = intent.getStringExtra("USER_NAME")
 
-        contactName.text = userName
+        contactName.text = contactNameString
 
         val userId = auth.currentUser!!.uid
 
-        //Document created by the ids of the users.
-        val chatHistory = generateDocument(userId, contactId ?: "")
 
-        val docRef = db.collection("Users").document(userId).collection(chatHistory)
-        val contactDocRef = db.collection("Users").document(contactId ?: "").collection(chatHistory)
+        db.collection("Users").document(userId).get()
+            .addOnSuccessListener { document ->
+                val currentUserName = document.getString("userName") ?: "Unknown"
 
+                val chatId = generateDocument(userId, contactId ?: "")
+                val chatRef = db.collection("chats").document(chatId).collection("messages")
 
-        docRef.get().addOnSuccessListener { documentSnapshot ->
-            for (document in documentSnapshot.documents) {
-                val userMessage = document.toObject<Messages>()
-                userMessage?.let {
-                    messages.add(it)
+                // Real-time message listener
+                chatRef.orderBy("timeStamp", Query.Direction.ASCENDING)
+                    .addSnapshotListener { snapshot, error ->
+                        if (error != null) {
+                            Toast.makeText(this, "Error loading messages", Toast.LENGTH_SHORT).show()
+                            return@addSnapshotListener
+                        }
+
+                        snapshot?.documentChanges?.forEach { change ->
+                            when (change.type) {
+                                DocumentChange.Type.ADDED -> {
+                                    val message = change.document.toObject<Messages>()
+                                    messages.add(message)
+                                    adapter.notifyItemInserted(messages.size - 1)
+                                    rv.scrollToPosition(messages.size - 1)
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+
+                // Send button handler
+                button.setOnClickListener {
+                    val inputMessage = messageInput.text.toString().trim()
+                    if (inputMessage.isNotEmpty()) {
+                        val timeStamp = timeStamp()
+                        val sendingMessage = Messages(userId, currentUserName, inputMessage, timeStamp)
+
+                        chatRef.add(sendingMessage)
+                            .addOnSuccessListener {
+                                messageInput.text.clear()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 }
             }
-            adapter.notifyDataSetChanged()
-        }
-
-        //Send button. Messages send and added to database.
-        button.setOnClickListener {
-            val inputMessage = messageInput.text.toString().trim()
-            if (inputMessage.isNotEmpty()) {
-                val timeStamp = timeStamp()
-                val sendingMessage = Messages(userId, userName ?: "null", inputMessage, timeStamp)
-
-                docRef.add(sendingMessage)
-                    .addOnSuccessListener {
-                        messages.add(sendingMessage)
-                        adapter.notifyItemInserted(messages.size - 1)
-                        messageInput.text.clear()
-                        rv.scrollToPosition(adapter.itemCount - 1)
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT).show()
-                    }
-
-                contactDocRef.add(sendingMessage)
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to get user details", Toast.LENGTH_SHORT).show()
             }
-        }
     }
+
 
     /**
      * generate a new document between the two users to add messages to.

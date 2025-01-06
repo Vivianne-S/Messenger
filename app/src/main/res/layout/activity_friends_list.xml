@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/HotPink"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/HotPink">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout6"
@@ -34,39 +34,39 @@
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintVertical_weight="4"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
+        app:layout_constraintVertical_weight="4"
         tools:layout_editor_absoluteX="0dp">
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friendsRecyclerView"
-            android:layout_width="390dp"
-            android:layout_height="509dp"
+            android:layout_width="404dp"
+            android:layout_height="499dp"
+            android:layout_margin="1dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@android:layout/list_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
-        app:layout_constraintVertical_weight="1"
-        >
+        app:layout_constraintVertical_weight="1">
 
 
         <Button
             android:id="@+id/view_contacts_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View all contacts"
             android:backgroundTint="@color/black"
+            android:text="View all contacts"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
