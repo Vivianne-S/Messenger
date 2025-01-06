@@ -3,6 +3,7 @@ package com.example.messenger
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +33,7 @@ class ContactActivity() : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_messenger_overview)
+        setContentView(R.layout.activity_contact)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -40,6 +41,17 @@ class ContactActivity() : AppCompatActivity() {
         }
 
         val signOutButton = findViewById<Button>(R.id.signOutButton)
+
+        //Button that sign out user.
+        signOutButton.setOnClickListener() {
+            signOut()
+
+        }
+
+        val backButton = findViewById<ImageView>(R.id.back_button_c)
+        backButton.setOnClickListener() {
+            finish()
+        }
 
 
 
@@ -51,11 +63,7 @@ class ContactActivity() : AppCompatActivity() {
 
 
 
-        //Button that sign out user.
-        signOutButton.setOnClickListener() {
-            signOut()
 
-        }
 
         val db = Firebase.firestore
         val recyclerView = findViewById<RecyclerView>(R.id.chatLists)

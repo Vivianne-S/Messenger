@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         //Checks if a user is already logged in.
         if (currentUser != null) {
-            val intent = Intent(this, ContactActivity::class.java)
+            val intent = Intent(this, FriendsListActivity::class.java)
             startActivity(intent)
         }
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
 
-                val intent = Intent(this, ContactActivity::class.java)
+                val intent = Intent(this, FriendsListActivity::class.java)
                 startActivity(intent)
 
 
