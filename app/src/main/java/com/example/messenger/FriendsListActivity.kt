@@ -1,6 +1,8 @@
 package com.example.messenger
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,13 @@ class FriendsListActivity : AppCompatActivity() {
         // Use the new FriendsRecyclerAdapter instead of ContactRecycleAdapter
         val adapter = FriendsRecyclerAdapter(this, friends)
         recyclerView.adapter = adapter
+
+        val viewContactsButton = findViewById<Button>(R.id.view_contacts_button)
+
+        viewContactsButton.setOnClickListener(){
+            val intent = Intent(this, ContactActivity::class.java)
+            startActivity(intent)
+        }
 
         val currentUserId = Firebase.auth.currentUser?.uid
         if (currentUserId != null) {

@@ -3,6 +3,8 @@ import android.R.attr.data
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var rv: RecyclerView
     lateinit var messageInput: EditText
     lateinit var db: FirebaseFirestore
+    lateinit var contactName : TextView
 
     var messages = mutableListOf<Messages>()
 
@@ -38,6 +41,13 @@ class ChatActivity : AppCompatActivity() {
             insets
         }
 
+        val backButton = findViewById<ImageView>(R.id.back_button)
+
+        backButton.setOnClickListener(){
+            finish()
+        }
+
+        contactName = findViewById(R.id.contactNameTV)
 
         val auth = FirebaseAuth.getInstance()
 
@@ -59,6 +69,8 @@ class ChatActivity : AppCompatActivity() {
         //get contact id and userName from contacts.
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
         val userName = intent.getStringExtra("USER_NAME")
+
+        contactName.text = userName
 
         val userId = auth.currentUser!!.uid
 

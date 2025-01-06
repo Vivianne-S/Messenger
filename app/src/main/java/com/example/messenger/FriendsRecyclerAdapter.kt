@@ -23,7 +23,7 @@ class FriendsRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val friend = friends[position]
 
-        holder.friendNameTV.text = friend.email
+        holder.friendNameTV.text = friend.userName
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
