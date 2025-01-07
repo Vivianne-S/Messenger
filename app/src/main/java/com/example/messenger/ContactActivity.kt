@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +19,10 @@ import com.google.firebase.firestore.toObject
 
 
 class ContactActivity() : AppCompatActivity() {
-   //List with all users.
+    //List with all users.
     var contacts = mutableListOf<User>()
+    private var filteredContacts = mutableListOf<User>()
+    private lateinit var adapter: ContactRecycleAdapter
 
     fun removeContact(contact: User) {
         val position = contacts.indexOfFirst { it.id == contact.id }
@@ -61,15 +64,25 @@ class ContactActivity() : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Initialize SearchView
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
-
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterContacts(newText)
+                return true
+            }
+        })
 
 
         val db = Firebase.firestore
         val recyclerView = findViewById<RecyclerView>(R.id.chatLists)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = ContactRecycleAdapter(this, contacts)
+        adapter = ContactRecycleAdapter(this, filteredContacts)
         recyclerView.adapter = adapter
 
         val currentUserId = Firebase.auth.currentUser?.uid
@@ -80,16 +93,32 @@ class ContactActivity() : AppCompatActivity() {
 
                     db.collection("Users").get().addOnSuccessListener { documentSnapShot ->
                         contacts.clear()
+                        filteredContacts.clear()
                         for (document in documentSnapShot.documents) {
                             val user = document.toObject<User>()
                             if (user != null && user.id != currentUserId && !friendIds.contains(user.id)) {
                                 contacts.add(user)
+                                filteredContacts.add(user)
                             }
                         }
                         adapter.notifyDataSetChanged()
                     }
                 }
         }
+    }
+
+    private fun filterContacts(query: String?) {
+        filteredContacts.clear()
+        if (query.isNullOrEmpty()) {
+            filteredContacts.addAll(contacts)
+        } else {
+            val lowercaseQuery = query.lowercase()
+            contacts.filterTo(filteredContacts) { contact ->
+                contact.email?.lowercase()?.contains(lowercaseQuery) == true ||
+                        contact.userName?.lowercase()?.contains(lowercaseQuery) == true
+            }
+        }
+        adapter.notifyDataSetChanged()
     }
 
 
