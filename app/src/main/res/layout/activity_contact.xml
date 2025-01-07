@@ -21,17 +21,15 @@
 
 
         <TextView
+            android:id="@+id/contactsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="All contacts"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-        </TextView>
+            app:layout_constraintEnd_toStartOf="@id/searchView"
+            app:layout_constraintStart_toEndOf="@id/back_button_c"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/back_button_c"
@@ -41,10 +39,19 @@
             android:src="@drawable/arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-        </ImageView>
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@color/white"
+            app:iconifiedByDefault="true"
+            app:queryHint="Search..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
