@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.firestore
 
 class FriendsRecyclerAdapter(
     private val context: Context,
-    private val friends: List<User>
+    private val friends: MutableList<User>
 ) : RecyclerView.Adapter<FriendsRecyclerAdapter.ViewHolder>() {
 
     private val layoutInflater = LayoutInflater.from(context)
@@ -26,8 +31,13 @@ class FriendsRecyclerAdapter(
 
         holder.friendNameTV.text = friend.userName
 
-        holder.deleteButton.setOnClickListener(){
-            //TODO remove from friendList and add to contactList again.
+        holder.deleteButton.setOnClickListener {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                removeFriend(currentUserId, friend, position)
+            } else {
+                Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+            }
         }
 
         holder.itemView.setOnClickListener {
@@ -38,6 +48,27 @@ class FriendsRecyclerAdapter(
             holder.itemView.context.startActivity(intent)
         }
     }
+    private fun removeFriend(currentUserId: String, friend: User, position: Int) {
+        val db = Firebase.firestore
+        val userRef = db.collection("Users").document(currentUserId)
+
+        db.runTransaction { transaction ->
+            transaction.update(userRef, "friends", FieldValue.arrayRemove(friend.id))
+
+            null
+        }.addOnSuccessListener {
+            friends.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, friends.size)
+
+            Toast.makeText(context, "${friend.userName} removed from friends", Toast.LENGTH_SHORT).show()
+
+        }.addOnFailureListener { e ->
+            Toast.makeText(context, "Failed to remove friend: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 
     override fun getItemCount(): Int = friends.size
 
