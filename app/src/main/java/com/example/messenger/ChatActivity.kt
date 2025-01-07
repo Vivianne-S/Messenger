@@ -1,5 +1,6 @@
 package com.example.messenger
 import android.R.attr.data
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +24,10 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Collections
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import java.util.concurrent.TimeUnit
 
 
 class ChatActivity : AppCompatActivity() {
@@ -123,6 +128,9 @@ class ChatActivity : AppCompatActivity() {
                         chatRef.add(sendingMessage)
                             .addOnSuccessListener {
                                 messageInput.text.clear()
+                                if (containsCelebrationWord(inputMessage)) {
+                                    showConfetti()
+                                }
                             }
                             .addOnFailureListener {
                                 Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT)
@@ -169,4 +177,28 @@ class ChatActivity : AppCompatActivity() {
         val epochTime = timeStampInSec()
         return formatEpochToDate(epochTime)
     }
+
+    private fun containsCelebrationWord(message: String): Boolean {
+        val celebrationWords = listOf(
+            "grattis", "gratulerar", "hurra",
+            "congrats", "congratulation", "congratulations", "gz"
+        )
+        return celebrationWords.any { message.contains(it, ignoreCase = true) }
+    }
+    private fun showConfetti() {
+        val konfettiView = findViewById<nl.dionsegijn.konfetti.xml.KonfettiView>(R.id.konfettiView)
+        konfettiView.visibility = ImageView.VISIBLE
+        konfettiView.start(
+            Party(
+                speed = 5f,
+                maxSpeed = 10f,
+                damping = 0.9f,
+                spread = 360,
+                colors = listOf(Color.MAGENTA, Color.YELLOW, Color.GREEN, Color.BLUE),
+                position = Position.Relative(0.5, 0.3),
+                emitter = Emitter(duration = 1, TimeUnit.SECONDS).max(100)
+            )
+        )
+    }
+
 }
