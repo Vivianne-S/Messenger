@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        val webClientId = getString(R.string.default_web_client_id)
+        Log.d("GoogleSignIn", "Web Client ID: $webClientId")
+
         auth = Firebase.auth
 
         signInLauncher =
@@ -199,6 +202,7 @@ class MainActivity : AppCompatActivity() {
                     Log.e("!!!", "One tap didn't work.    ${e.localizedMessage}")
                 }
             }.addOnFailureListener(this) { e ->
+                Log.e("!!!", "One tap failed.   ${e.localizedMessage} ")
                 Log.e("!!!", "One tap failed.   ${e.localizedMessage} ")
 
             }
