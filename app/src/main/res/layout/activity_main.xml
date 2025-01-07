@@ -30,7 +30,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/formLayout"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
@@ -61,11 +61,11 @@
             app:layout_constraintWidth_percent="0.8" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/signIn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
-            android:text="Login"
+            android:text="Sign In"
             android:layout_marginTop="16dp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,19 +82,19 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginButton"
+            app:layout_constraintTop_toBottomOf="@id/signIn"
             app:layout_constraintWidth_percent="0.8" />
 
         <TextView
-            android:id="@+id/continueWithText"
+            android:id="@+id/signUpHereText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Or continue with"
-            android:textColor="@color/black"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/signUpButton"
+            android:clickable="true"
+            android:text="@string/signUpHereText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/signIn"/>
 
         <Button
             android:id="@+id/googleSignInButton"
@@ -109,7 +109,7 @@
             android:gravity="center_vertical|start"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/continueWithText"
+            app:layout_constraintTop_toBottomOf="@id/signUpHereText"
             app:layout_constraintWidth_percent="0.8" />
 
 
