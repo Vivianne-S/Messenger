@@ -39,10 +39,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var signInRequest: BeginSignInRequest
     lateinit var db: FirebaseFirestore
 
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("GoogleSignIn", "Web Client ID: $webClientId")
 
         auth = Firebase.auth
-
+        oneTapClient = Identity.getSignInClient(this)
         signInLauncher =
             registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
-        oneTapClient = Identity.getSignInClient(this)
+
 
         val currentUser = auth.currentUser
 
@@ -155,8 +151,8 @@ class MainActivity : AppCompatActivity() {
      * if user is found and logged in properly, next activity will start
      */
     fun signIn() {
-        var emailText = email.text.toString()
-        var passwordText = password.text.toString()
+        val emailText = email.text.toString()
+        val passwordText = password.text.toString()
 
         if (emailText.isEmpty() || passwordText.isEmpty()) {
             Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
