@@ -38,6 +38,7 @@ android {
 
 dependencies {
 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -49,6 +50,9 @@ dependencies {
     implementation("nl.dionsegijn:konfetti-xml:2.0.2")
     implementation("nl.dionsegijn:konfetti-core:2.0.2")
     testImplementation(libs.junit)
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
+    implementation ("com.google.android.gms:play-services-auth:20.2.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

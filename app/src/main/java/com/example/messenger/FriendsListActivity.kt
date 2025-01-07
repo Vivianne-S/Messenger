@@ -32,6 +32,8 @@ class FriendsListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         val currentUserId = Firebase.auth.currentUser?.uid
         if (currentUserId != null) {
             val db = Firebase.firestore
@@ -56,4 +58,6 @@ class FriendsListActivity : AppCompatActivity() {
                 }
         }
     }
+
+
 }
