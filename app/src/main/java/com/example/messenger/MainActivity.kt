@@ -147,12 +147,16 @@ class MainActivity : AppCompatActivity() {
         var emailText = email.text.toString()
         var passwordText = password.text.toString()
 
+        if (emailText.isEmpty() || passwordText.isEmpty()) {
+            Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         auth.signInWithEmailAndPassword(emailText, passwordText).addOnCompleteListener() { task ->
             if (task.isSuccessful) {
 
                 val intent = Intent(this, FriendsListActivity::class.java)
                 startActivity(intent)
-
 
             } else {
                 val exception = task.exception
@@ -173,6 +177,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     fun signInWithGoogle() {
         oneTapClient.beginSignIn(signInRequest)
