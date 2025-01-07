@@ -125,6 +125,14 @@ class MainActivity : AppCompatActivity() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+
+
+        val signInWithGoogleButton = findViewById<Button>(R.id.googleSignInButton)
+        signInWithGoogleButton.setOnClickListener(){
+            signInWithGoogle()
+        }
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
