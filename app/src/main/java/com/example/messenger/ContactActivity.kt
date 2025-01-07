@@ -29,6 +29,11 @@ class ContactActivity() : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadContacts()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -92,7 +97,27 @@ class ContactActivity() : AppCompatActivity() {
         }
     }
 
+    private fun loadContacts() {
+        val currentUserId = Firebase.auth.currentUser?.uid
+        if (currentUserId != null) {
+            val db = Firebase.firestore
+            db.collection("Users").document(currentUserId).get()
+                .addOnSuccessListener { currentUserDoc ->
+                    val friendIds = currentUserDoc.get("friends") as? List<String> ?: emptyList()
 
+                    db.collection("Users").get().addOnSuccessListener { documentSnapShot ->
+                        contacts.clear()
+                        for (document in documentSnapShot.documents) {
+                            val user = document.toObject<User>()
+                            if (user != null && user.id != currentUserId && !friendIds.contains(user.id)) {
+                                contacts.add(user)
+                            }
+                        }
+                        findViewById<RecyclerView>(R.id.chatLists).adapter?.notifyDataSetChanged()
+                    }
+                }
+        }
+    }
     /**
      * function sign out user and send user to the log in page (MainActivity).
      * after log out, doesn´t allow user to use "back swipe".
