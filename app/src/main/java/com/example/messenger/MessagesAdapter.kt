@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -21,8 +20,6 @@ class MessagesAdapter(
 
     private val layoutInflater = LayoutInflater.from(context)
     private lateinit var cardView: CardView
-    private lateinit var nameTextView : TextView
-    private lateinit var dateTextView : TextView
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
