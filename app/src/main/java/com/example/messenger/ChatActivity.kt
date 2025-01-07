@@ -195,8 +195,8 @@ class ChatActivity : AppCompatActivity() {
                 damping = 0.9f,
                 spread = 360,
                 colors = listOf(Color.MAGENTA, Color.YELLOW, Color.GREEN, Color.BLUE),
-                position = Position.Relative(0.5, 0.3),
-                emitter = Emitter(duration = 1, TimeUnit.SECONDS).max(100)
+                position = Position.Relative(0.5, 0.1),
+                emitter = Emitter(duration = 1, TimeUnit.SECONDS).max(400)
             )
         )
     }
