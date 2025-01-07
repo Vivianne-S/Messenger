@@ -160,7 +160,7 @@ class ChatActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         return formatter.format(zonedDateTime)
     }
-
+//hej
     fun timeStampInSec(): Long {
         return Instant.now().epochSecond
     }
