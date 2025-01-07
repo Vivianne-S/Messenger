@@ -108,7 +108,12 @@ class ChatActivity : AppCompatActivity() {
                                     messages.add(message)
                                     adapter.notifyItemInserted(messages.size - 1)
                                     rv.scrollToPosition(messages.size - 1)
+
+                                    if (containsCelebrationWord(message.text)) {
+                                        showConfetti()
+                                    }
                                 }
+
 
                                 else -> {}
                             }
