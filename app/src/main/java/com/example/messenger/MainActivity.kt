@@ -1,33 +1,90 @@
 package com.example.messenger
 
+import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
+import android.content.SyncRequest
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var oneTapClient: SignInClient
     private lateinit var auth: FirebaseAuth
+    lateinit var signInLauncher: ActivityResultLauncher<IntentSenderRequest>
     private lateinit var email: EditText
     private lateinit var password: EditText
+    lateinit var signInRequest: BeginSignInRequest
+    lateinit var db: FirebaseFirestore
+
+    companion object {
+        private const val RC_SIGN_IN = 9001
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-
         auth = Firebase.auth
+
+        signInLauncher =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
+                    val idToken = googleCredential.googleIdToken
+                    when {
+                        idToken != null -> {
+
+                            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                            auth.signInWithCredential(firebaseCredential)
+                                .addOnCompleteListener(this) { task ->
+                                    if (task.isSuccessful) {
+                                        Log.d("!!!", "signInWithCredential:success")
+                                        val user = auth.currentUser
+
+                                        googleUserCreated(user)
+
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w("!!!", "signInWithCredential:failure", task.exception)
+                                        googleUserCreated(null)
+                                    }
+                                }
+                        }
+
+                        else -> {
+                            // Shouldn't happen.
+                            Log.d("!!!", "No ID token!")
+                        }
+                    }
+
+                }
+            }
+        oneTapClient = Identity.getSignInClient(this)
 
         val currentUser = auth.currentUser
 
@@ -37,19 +94,28 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions
+                    .builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(true).build()
+            ).build()
+
 
         val signInButton = findViewById<Button>(R.id.signIn)
         email = findViewById(R.id.email)
         password = findViewById(R.id.password)
 
-        signInButton.setOnClickListener(){
+        signInButton.setOnClickListener() {
             signIn()
         }
 
         val signUpButton = findViewById<TextView>(R.id.signUpHereText)
 
         //TextButton that takes user to fragment to create new account.
-        signUpButton.setOnClickListener(){
+        signUpButton.setOnClickListener() {
 
             signInButton.isEnabled = false
 
@@ -105,6 +171,53 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    fun signInWithGoogle() {
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener(this) { result ->
+                try {
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    signInLauncher.launch(intentSenderRequest)
+
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e("!!!", "One tap didn't work.    ${e.localizedMessage}")
+                }
+            }.addOnFailureListener(this) { e ->
+                Log.e("!!!", "One tap failed.   ${e.localizedMessage} ")
+
+            }
+    }
+
+    fun googleUserCreated(user: FirebaseUser?) {
+
+        if (user != null) {
+            val userId = auth.currentUser!!.uid
+            val email = auth.currentUser!!.email
+            val split = email!!.split("@")
+            val userName = split[0]
+            val newUser = User(email, userId, userName)
+
+            db.collection("Users").document(userId).get().addOnSuccessListener { document ->
+                if (!document.exists()) {
+                    db.collection("Users").document(userId).set(newUser)
+                        .addOnSuccessListener {
+
+                            val intent = Intent(this, FriendsListActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                } else {
+                    val intent = Intent(this, FriendsListActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+        else {
+            Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
         }
     }
 }
