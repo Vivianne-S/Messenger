@@ -82,8 +82,6 @@ class ContactActivity() : AppCompatActivity() {
            }
        })
 
-
-       val db = Firebase.firestore
        val recyclerView = findViewById<RecyclerView>(R.id.chatLists)
        recyclerView.layoutManager = LinearLayoutManager(this)
 
