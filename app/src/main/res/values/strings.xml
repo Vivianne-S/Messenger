@@ -18,4 +18,23 @@
     <string name="signUpHereText">Don´t have an account? Sign up here.</string>
 
     <string name="default_web_client_id">263996275972-m784h0boqcicvprqpfqv8m3n4mmmcsh6.apps.googleusercontent.com</string>
+
+    <string name="TypeMessage">Type message here</string>
+
+    <string name="Send">Send</string>
+
+    <string name="AllContacts">All contacts</string>
+
+    <string name="SearchBar">Search...</string>
+
+    <string name="SignOut">Sign out</string>
+
+    <string name="ViewFriends">View friends</string>
+
+    <string name="Friends">Friends</string>
+
+    <string name="ViewContacts">View contacts</string>
+
+    <string name="AddFriend">Add friend</string>
+
 </resources>
