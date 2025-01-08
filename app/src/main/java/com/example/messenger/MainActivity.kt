@@ -31,12 +31,10 @@ import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var oneTapClient: SignInClient
+
     private lateinit var auth: FirebaseAuth
-    lateinit var signInLauncher: ActivityResultLauncher<IntentSenderRequest>
     private lateinit var email: EditText
     private lateinit var password: EditText
-    lateinit var signInRequest: BeginSignInRequest
     lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,42 +46,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("GoogleSignIn", "Web Client ID: $webClientId")
 
         auth = Firebase.auth
-        oneTapClient = Identity.getSignInClient(this)
-        signInLauncher =
-            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data: Intent? = result.data
-                    val googleCredential = oneTapClient.getSignInCredentialFromIntent(data)
-                    val idToken = googleCredential.googleIdToken
-                    when {
-                        idToken != null -> {
-
-                            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                            auth.signInWithCredential(firebaseCredential)
-                                .addOnCompleteListener(this) { task ->
-                                    if (task.isSuccessful) {
-                                        Log.d("!!!", "signInWithCredential:success")
-                                        val user = auth.currentUser
-
-                                        googleUserCreated(user)
-
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w("!!!", "signInWithCredential:failure", task.exception)
-                                        googleUserCreated(null)
-                                    }
-                                }
-                        }
-
-                        else -> {
-                            // Shouldn't happen.
-                            Log.d("!!!", "No ID token!")
-                        }
-                    }
-
-                }
-            }
-
 
         val currentUser = auth.currentUser
 
@@ -92,16 +54,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, FriendsListActivity::class.java)
             startActivity(intent)
         }
-
-        signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions
-                    .builder()
-                    .setSupported(true)
-                    .setServerClientId(getString(R.string.default_web_client_id))
-                    .setFilterByAuthorizedAccounts(true).build()
-            ).build()
-
 
         val signInButton = findViewById<Button>(R.id.signIn)
         email = findViewById(R.id.email)
@@ -125,11 +77,6 @@ class MainActivity : AppCompatActivity() {
             transaction.commit()
         }
 
-
-        val signInWithGoogleButton = findViewById<Button>(R.id.googleSignInButton)
-        signInWithGoogleButton.setOnClickListener(){
-            signInWithGoogle()
-        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -186,52 +133,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun signInWithGoogle() {
-        oneTapClient.beginSignIn(signInRequest)
-            .addOnSuccessListener(this) { result ->
-                try {
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
-                    signInLauncher.launch(intentSenderRequest)
 
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.e("!!!", "One tap didn't work.    ${e.localizedMessage}")
-                }
-            }.addOnFailureListener(this) { e ->
-                Log.e("!!!", "One tap failed.   ${e.localizedMessage} ")
-                Log.e("!!!", "One tap failed.   ${e.localizedMessage} ")
-
-            }
-    }
-
-    fun googleUserCreated(user: FirebaseUser?) {
-
-        if (user != null) {
-            val userId = auth.currentUser!!.uid
-            val email = auth.currentUser!!.email
-            val split = email!!.split("@")
-            val userName = split[0]
-            val newUser = User(email, userId, userName)
-
-            db.collection("Users").document(userId).get().addOnSuccessListener { document ->
-                if (!document.exists()) {
-                    db.collection("Users").document(userId).set(newUser)
-                        .addOnSuccessListener {
-
-                            val intent = Intent(this, FriendsListActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                } else {
-                    val intent = Intent(this, FriendsListActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-        else {
-            Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
-        }
-    }
 }
 
