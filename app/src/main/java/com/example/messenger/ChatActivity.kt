@@ -19,11 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
-import java.util.Collections
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
@@ -72,9 +69,6 @@ class ChatActivity : AppCompatActivity() {
         rv.adapter = adapter
 
         val button = findViewById<Button>(R.id.button)
-
-        //not used
-        // val contactEmail = intent.getStringExtra("contactEmail")
 
         //get contact id and userName from contacts.
         val contactId = intent.getStringExtra("CONTACT_ID_KEY")
@@ -154,13 +148,6 @@ class ChatActivity : AppCompatActivity() {
         return "Chat_${document[0]}_${document[1]}"
     }
 
-    /**
-     * Timestamp to keep track on when messages are sent.
-     */
-    /* fun timeStamp(): String {
-        val time = LocalDateTime.now()
-        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    }*/
 
     fun formatEpochToDate(epochSeconds: Long): String {
         val instant = Instant.ofEpochSecond(epochSeconds)
@@ -170,7 +157,7 @@ class ChatActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         return formatter.format(zonedDateTime)
     }
-//hej
+
     fun timeStampInSec(): Long {
         return Instant.now().epochSecond
     }

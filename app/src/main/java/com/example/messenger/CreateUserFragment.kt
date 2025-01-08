@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +28,6 @@ class CreateUserFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = Firebase.firestore
 
-
     }
 
     override fun onCreateView(
@@ -44,6 +42,7 @@ class CreateUserFragment : Fragment() {
         password = view.findViewById(R.id.password)
 
         val registerButton = view.findViewById<Button>(R.id.register)
+
         val signInTextView = view.findViewById<TextView>(R.id.signInText)
 
 
@@ -51,6 +50,7 @@ class CreateUserFragment : Fragment() {
         signInTextView.setOnClickListener() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
 
 
         registerButton.setOnClickListener() {
