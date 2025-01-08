@@ -78,6 +78,7 @@ class ChatActivity : AppCompatActivity() {
 
         val userId = auth.currentUser!!.uid
 
+
         db.collection("Users").document(userId).get()
             .addOnSuccessListener { document ->
                 val currentUserName = document.getString("userName") ?: "Unknown"
@@ -102,10 +103,11 @@ class ChatActivity : AppCompatActivity() {
                                     adapter.notifyItemInserted(messages.size - 1)
                                     rv.scrollToPosition(messages.size - 1)
 
-                                    if (containsCelebrationWord(message.message)) {
+                                    if (containsCelebrationWord(message.text)) {
                                         showConfetti()
                                     }
                                 }
+
 
                                 else -> {}
                             }
@@ -117,6 +119,7 @@ class ChatActivity : AppCompatActivity() {
                     val inputMessage = messageInput.text.toString().trim()
                     if (inputMessage.isNotEmpty()) {
                         val timeStamp = timeStamp()
+
 
                         val sendingMessage =
                             Messages(userId, currentUserName, inputMessage, timeStamp)

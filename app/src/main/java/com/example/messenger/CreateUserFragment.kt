@@ -44,15 +44,6 @@ class CreateUserFragment : Fragment() {
 
         val registerButton = view.findViewById<Button>(R.id.register)
 
-        val signInTextView = view.findViewById<TextView>(R.id.signInText)
-
-
-        //TextButton that takes user back to mainActivity to log in.
-        signInTextView.setOnClickListener() {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
-
 
         registerButton.setOnClickListener() {
             createUser()

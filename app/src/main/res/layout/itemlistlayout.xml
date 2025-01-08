@@ -50,8 +50,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+
                 android:backgroundTint="@color/black"
-                android:text="@string/AddFriend"
+                android:text="Add Friend"
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
