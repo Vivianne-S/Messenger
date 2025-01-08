@@ -49,7 +49,7 @@ class CreateUserFragment : Fragment() {
 
         //TextButton that takes user back to mainActivity to log in.
         signInTextView.setOnClickListener() {
-            //TODO
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
 
