@@ -29,6 +29,7 @@ class CreateUserFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = Firebase.firestore
 
+
     }
 
     override fun onCreateView(
@@ -43,6 +44,13 @@ class CreateUserFragment : Fragment() {
         password = view.findViewById(R.id.password)
 
         val registerButton = view.findViewById<Button>(R.id.register)
+        val signInTextView = view.findViewById<TextView>(R.id.signInText)
+
+
+        //TextButton that takes user back to mainActivity to log in.
+        signInTextView.setOnClickListener() {
+            //TODO
+        }
 
         val signInTextView = view.findViewById<TextView>(R.id.signInText)
 

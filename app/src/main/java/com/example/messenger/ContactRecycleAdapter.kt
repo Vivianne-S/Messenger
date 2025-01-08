@@ -3,12 +3,14 @@ package com.example.messenger
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -120,6 +122,7 @@ class ContactRecycleAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val contactNameTV: TextView = itemView.findViewById(R.id.contactNameTV)
+       // val lastMessageTV: TextView = itemView.findViewById(R.id.lastMessageTV)
         val addFriendButton: Button = itemView.findViewById(R.id.addFriendButton)
         val konfettiView: KonfettiView = itemView.findViewById(R.id.konfettiView)
     }
