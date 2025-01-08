@@ -189,7 +189,7 @@ class ChatActivity : AppCompatActivity() {
             "congrats", "congratulation", "congratulations", "gz"
         )
         return celebrationWords.any { message.contains(it, ignoreCase = true) }
-    }
+    }//hej
     private fun showConfetti() {
         val konfettiView = findViewById<nl.dionsegijn.konfetti.xml.KonfettiView>(R.id.konfettiView)
         konfettiView.visibility = ImageView.VISIBLE
