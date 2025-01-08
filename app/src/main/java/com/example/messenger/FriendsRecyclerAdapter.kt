@@ -48,6 +48,10 @@ class FriendsRecyclerAdapter(
             holder.itemView.context.startActivity(intent)
         }
     }
+
+    /**
+     * Remove contact from friendlist
+     */
     private fun removeFriend(currentUserId: String, friend: User, position: Int) {
         val db = Firebase.firestore
         val userRef = db.collection("Users").document(currentUserId)

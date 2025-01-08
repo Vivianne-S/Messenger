@@ -35,15 +35,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var email: EditText
     private lateinit var password: EditText
-    lateinit var db: FirebaseFirestore
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
-        val webClientId = getString(R.string.default_web_client_id)
-        Log.d("GoogleSignIn", "Web Client ID: $webClientId")
 
         auth = Firebase.auth
 
@@ -76,8 +73,6 @@ class MainActivity : AppCompatActivity() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -131,8 +126,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 }
 

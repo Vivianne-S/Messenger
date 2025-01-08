@@ -26,7 +26,7 @@ class MessagesAdapter(
         val itemView = layoutInflater.inflate(R.layout.message_item, parent, false)
         return MessageViewHolder(itemView)
     }
-    
+
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
         val currentUsedId = Firebase.auth.currentUser?.uid
@@ -45,7 +45,7 @@ class MessagesAdapter(
         if (message.userId == currentUsedId) {
             cardView.setCardBackgroundColor(Color.parseColor("#e75555"))
             params.horizontalBias = 1f
-        }else{
+        } else {
             params.horizontalBias = 0f
 
         }

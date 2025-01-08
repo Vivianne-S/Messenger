@@ -57,6 +57,9 @@ class FriendsListActivity : AppCompatActivity() {
         loadFriends()
     }
 
+    /**
+     * Filter friends
+     */
     private fun filterFriends(query: String?) {
         filteredFriends.clear()
         if (query.isNullOrEmpty()) {
@@ -71,6 +74,9 @@ class FriendsListActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
+    /**
+     * Load friends from database
+     */
     private fun loadFriends() {
         val currentUserId = Firebase.auth.currentUser?.uid
         if (currentUserId != null) {
