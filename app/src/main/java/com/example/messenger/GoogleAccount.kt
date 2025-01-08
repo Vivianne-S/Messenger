@@ -22,6 +22,9 @@ import com.google.firebase.firestore.firestore
 class GoogleAccount {
     /*.   !!!MOVED CODE FROM MAIN ACTIVITY. DOES NOT WORK IN THIS CONTEXT!!!
 
+ val webClientId = getString(R.string.default_web_client_id)
+        Log.d("GoogleSignIn", "Web Client ID: $webClientId")
+
 
         var auth = FirebaseAuth.getInstance()
         var oneTapClient = Identity.getSignInClient(this)

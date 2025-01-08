@@ -98,6 +98,10 @@ class ContactRecycleAdapter(
         }
     }
 
+    /**
+     * Adds friend to FriendListActivity and remove contact from contactList
+     */
+
     private fun updateFriendsList(currentUserId: String, contact: User, holder: ViewHolder) {
         val db = Firebase.firestore
         val userRef = db.collection("Users").document(currentUserId)

@@ -1,4 +1,5 @@
 package com.example.messenger
+
 import android.R.attr.data
 import android.graphics.Color
 import android.os.Bundle
@@ -148,7 +149,9 @@ class ChatActivity : AppCompatActivity() {
         return "Chat_${document[0]}_${document[1]}"
     }
 
-
+    /**
+     * Part of getting timestamp.
+     */
     fun formatEpochToDate(epochSeconds: Long): String {
         val instant = Instant.ofEpochSecond(epochSeconds)
 
@@ -158,22 +161,35 @@ class ChatActivity : AppCompatActivity() {
         return formatter.format(zonedDateTime)
     }
 
+    /**
+     * Part of getting timestamp.
+     */
     fun timeStampInSec(): Long {
         return Instant.now().epochSecond
     }
 
-    fun timeStamp() : String{
+    /**
+     * Return timestamp.
+     */
+    fun timeStamp(): String {
         val epochTime = timeStampInSec()
         return formatEpochToDate(epochTime)
     }
 
+    /**
+     * List of words to trigger confetti
+     */
     private fun containsCelebrationWord(message: String): Boolean {
         val celebrationWords = listOf(
             "grattis", "gratulerar", "hurra",
             "congrats", "congratulation", "congratulations", "gz"
         )
         return celebrationWords.any { message.contains(it, ignoreCase = true) }
-    }//hej
+    }
+
+    /**
+     * Adds a visual confetti in the recyclerView
+     */
     private fun showConfetti() {
         val konfettiView = findViewById<nl.dionsegijn.konfetti.xml.KonfettiView>(R.id.konfettiView)
         konfettiView.visibility = ImageView.VISIBLE
