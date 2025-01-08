@@ -19,6 +19,27 @@
 
     <string name="signUpHereText">Har du inget konto? Skapa ett här!</string>
 
-    <string name="default_web_client_id">263996275972-s6mr7f796e0jrpm877b22ll85j3pp54k.apps.googleusercontent.com</string>
+    <string name="default_web_client_id">263996275972-m784h0boqcicvprqpfqv8m3n4mmmcsh6.apps.googleusercontent.com</string>
+
+
+
+    <string name="TypeMessage">Skriv ditt meddelande här</string>
+
+    <string name="Send">Skicka</string>
+
+    <string name="AllContacts">Alla kontakter</string>
+
+    <string name="SearchBar">Sök...</string>
+
+    <string name="SignOut">Logga ut</string>
+
+    <string name="ViewFriends">Visa vänner</string>
+
+    <string name="Friends">Vänner</string>
+
+    <string name="ViewContacts">Visa kontakter</string>
+
+    <string name="AddFriend">Lägg till vän</string>
+
 
 </resources>
