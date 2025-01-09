@@ -20,6 +20,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -36,11 +41,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var password: EditText
 
+    lateinit var googleSignInClient: GoogleSignInClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
 
         auth = Firebase.auth
 
@@ -78,6 +93,12 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val signInButtonGoogle = findViewById<Button>(R.id.googleSignInButton)
+
+        signInButtonGoogle.setOnClickListener() {
+            signInWithGoogle()
         }
     }
 
@@ -123,6 +144,67 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
+            }
+        }
+    }
+
+    fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        launcher.launch(signInIntent)
+
+    }
+
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            handleResults(task)
+        }
+    }
+
+    fun handleResults(task: Task<GoogleSignInAccount>) {
+        if (task.isSuccessful) {
+            val account: GoogleSignInAccount? = task.result
+
+            if (account != null) {
+                updateUI(account)
+            }
+        }
+    }
+
+    fun updateUI(account: GoogleSignInAccount) {
+
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+        auth.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val userId = auth.currentUser!!.uid
+
+                val email = auth.currentUser!!.email
+                //The first part of email address
+                // (everything before the "@") is saved in a new variable.
+                val split = email!!.split("@")
+
+                val contactName = split[0]
+
+                val user = User(email, userId, contactName)
+
+                val db = Firebase.firestore
+
+                db.collection("Users").document(userId).set(user)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        val intent = Intent(this, ContactActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(
+                            this,
+                            "Failed to create user: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
             }
         }
     }
